@@ -1,0 +1,27 @@
+---
+- hosts: all
+  vars:
+    user1: aagrawa8
+  user: "{{user1}}"
+
+  tasks:
+   - name: cloning repo
+     sudo: false
+     command: git clone https://github.com/amritbhanu/Spark_VCL.git
+
+   - name: create spark dir
+     sudo: false
+     file: path=/home/{{user1}}/spark state=directory mode=0755
+
+   - name: download sources
+     sudo: false
+     get_url: url=http://ftp.wayne.edu/apache//spark/spark-1.6.0/spark-1.6.0-bin-hadoop2.6.tgz dest=/home/{{user1}}/spark/
+
+   - name: Unarchive Spark download
+     sudo: false
+     unarchive: src=/home/{{user1}}/spark/spark-1.6.0-bin-hadoop2.6.tgz dest=/home/{{user1}}/spark copy=no
+
+   - name: Move spark dir to spark_latest
+     sudo: false
+     command: mv /home/{{user1}}/spark/spark-1.6.0-bin-hadoop2.6 /home/{{user1}}/spark/spark_latest
+

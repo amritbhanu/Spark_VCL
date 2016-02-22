@@ -1,0 +1,8 @@
+---
+- hosts: all
+  user: aagrawa8
+
+  tasks:
+   - name: Run apt-get update
+     sudo: true
+     apt: update_cache=yes

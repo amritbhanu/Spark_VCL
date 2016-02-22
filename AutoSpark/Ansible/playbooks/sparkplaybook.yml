@@ -1,0 +1,29 @@
+---
+- hosts: sparknodes
+  vars:
+    master: "{{ MASTER_YES }}"
+    spark_url: "{{ SPARK_URL }}"
+    user: "{{ USER }}"
+    master_ip: "{{ MASTER_IP }}"
+  user: "{{user}}"
+
+  tasks:
+   - name: Install scala 
+     sudo: true
+     apt: pkg=scala state=installed update_cache=true
+
+   - name: create spark dir
+     sudo: false
+     file: path=/home/{{user}}/spark state=directory mode=0755
+
+   - name: download sources
+     sudo: false
+     get_url: url=http://ftp.wayne.edu/apache//spark/spark-1.6.0/spark-1.6.0-bin-hadoop2.6.tgz dest=/home/{{user}}/spark/
+
+   - name: Unarchive Spark download
+     sudo: false
+     unarchive: src=/home/{{user}}/spark/spark-1.6.0-bin-hadoop2.6.tgz dest=/home/{{user}}/spark copy=no
+
+   - name: Move spark dir to spark_latest
+     sudo: false
+     command: mv /home/{{user}}/spark/spark-1.6.0-bin-hadoop2.6 /home/{{user}}/spark/spark_latest
