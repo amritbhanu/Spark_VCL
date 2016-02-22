@@ -5,6 +5,10 @@
   user: "{{user1}}"
 
   tasks:
+   - name: Run apt-get update
+     sudo: true
+     apt: update_cache=yes
+
    - name: cloning repo
      sudo: false
      command: git clone https://github.com/amritbhanu/Spark_VCL.git
