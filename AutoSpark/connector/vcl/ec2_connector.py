@@ -126,13 +126,16 @@ def wait_for_public_ip():
     time.sleep(150)
 
 
-def create_inventory_file(key_name):
+def create_inventory_file(key_name, user):
 
 	python_file_path = os.path.dirname(os.path.abspath(__file__))
 	spark_file_path = os.path.join(python_file_path +
 		                            "/../../../../spark/spark_latest/conf/slaves")
+	hadoop_file_path = os.path.join(p"/home/"+user+"/hadoop/etc/hadoop/slaves)
+	hadoop_slave=open(hadoop_file_path, "w")
 	spark_slave=open(spark_file_path, "w")
 	spark_slave.truncate()
+	hadoop_slave.truncate()
 	master_file_path = os.path.join(python_file_path +
 		                            "/../../Ansible/playbooks/master_inventory")
 
@@ -142,7 +145,6 @@ def create_inventory_file(key_name):
 	# Writing the master inventory file
 	master_file.write("[sparknodes]\n")
 	master_file.write(key_name +"\n")
-	spark_slave.write(key_name +"\n")
         slave_file_path = os.path.join(python_file_path +
 		                           "/../../Ansible/playbooks/slave_inventory")
 
@@ -154,12 +156,14 @@ def create_inventory_file(key_name):
 		try:
 		    slave_file.write(doc.strip() +"\n")
 		    spark_slave.write(doc.strip() +"\n")
+		    hadoop_slave.write(doc.strip() +"\n")
 		except:
 		    pass
 
 	master_file.close()
 	slave_file.close()
 	spark_slave.close()
+	hadoop_slave.close()
 
 def create_shell_script(key_name, user=user):
 
@@ -258,7 +262,7 @@ def main(argv):
 
     # Writing master / slave inventory files
     # also writing slave nodes in the spark folder
-    create_inventory_file(KEY_NAME)
+    create_inventory_file(KEY_NAME, user)
 
     # Create shell script
     create_shell_script(KEY_NAME, user)

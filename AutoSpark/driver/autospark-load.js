@@ -60,14 +60,23 @@ prompt.get(['provider', 'data_file_full_path','file_name_at_destination'], funct
             }
         }
 	var user = fs.readFileSync(USER, 'utf-8').split('\n')[0];
-        console.log(user)
         console.log(nodes_array)
+        console.log("Excecuting commands hdfs, spark-start slave start-dfs and start-yarn")	
+	cmd = "start-dfs.sh"
+        command_executor(cmd)
+	cmd = "start-yarn.sh"
+        command_executor(cmd)
+	cmd = "hadoop fs -mkdir -p In"
+        command_executor(cmd)
+	cmd = "/home/"+user+"/spark/spark_latest/sbin/start-all.sh"
+        command_executor(cmd)
+
         if(provider == 'vcl'){
 
                 for(var i=0; i < nodes_array.length; i++) {
 
                     ip_addr = nodes_array[i]
-                    cmd = "scp " + data_file_full_path + " "+user+"@" + ip_addr + ":/home/"+user+"/" + file_name_at_destination
+                    cmd = "hadoop fs -put "+ data_file_full_path + " /user/"+user+"/In/" + file_name_at_destination
                     command_executor(cmd)
                 }
 

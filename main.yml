@@ -101,5 +101,10 @@
      lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/yarn-site.xml
                 regexp='^<configuration>'
                 insertafter='<configuration>'
-                line='<property><name>yarn.nodemanager.aux-services</name><value>mapreduce_shuffle</value></property><property><name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name><value>org.apache.hadoop.mapred.ShuffleHandler</value></property><property><name>yarn.resourcemanager.resource-tracker.address</name><value>10.64.200.47:8025</value></property><property><name>yarn.resourcemanager.scheduler.address</name><value>{{inventory_hostname}}:8030</value></property><property><name>yarn.resourcemanager.address</name><value>{{inventory_hostname}}:8050</value></property>'
+                line='<property><name>yarn.nodemanager.aux-services</name><value>mapreduce_shuffle</value></property><property><name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name><value>org.apache.hadoop.mapred.ShuffleHandler</value></property><property><name>yarn.resourcemanager.resource-tracker.address</name><value>{{inventory_hostname}}:8025</value></property><property><name>yarn.resourcemanager.scheduler.address</name><value>{{inventory_hostname}}:8030</value></property><property><name>yarn.resourcemanager.address</name><value>{{inventory_hostname}}:8050</value></property>'
                 state=present
+
+   - name: hdfs namenode format
+     sudo: false
+     shell: hdfs namenode -format
+
