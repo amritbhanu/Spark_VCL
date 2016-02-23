@@ -36,6 +36,28 @@
      sudo: false
      unarchive: src=/home/{{user1}}/hadoop-2.6.0.tar.gz dest=/home/{{user1}}/ copy=no
 
-   - name: Move spark dir to spark_latest
+   - name: Move hadoop-2.6 dir to hadoop
      sudo: false
      command: mv /home/{{user1}}/hadoop-2.6.0 /home/{{user1}}/hadoop
+
+   - name: writing to bashrc
+     lineinfile: dest=/home/{{user1}}/.bashrc
+                regexp=''
+                insertafter=EOF
+                line='export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_INSTALL=/home/aagrawa8/hadoop\nexport PATH=$PATH:$HADOOP_INSTALL/bin\nexport PATH=$PATH:$HADOOP_INSTALL/sbin\nexport HADOOP_MAPRED_HOME=$HADOOP_INSTALL\nexport HADOOP_COMMON_HOME=$HADOOP_INSTALL\nexport HADOOP_HDFS_HOME=$HADOOP_INSTALL\nexport YARN_HOME=$HADOOP_INSTALL\nexport HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_INSTALL/lib/native'
+
+   - name: update bashrc
+     sudo: false
+     shell: source /home/{{user1}}/.bashrc
+     args:
+        executable: /bin/bash
+
+   - name: writing to hadoop-env.sh
+     lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/hadoop-env.sh
+                regexp=''
+                insertafter=EOF
+                line='export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64'
+
+   - name: Changing ownership
+     sudo: false
+     command: chown -R {{user1}} /home/{{user1}}/hadoop
