@@ -131,7 +131,7 @@ def create_inventory_file(key_name, user):
 	python_file_path = os.path.dirname(os.path.abspath(__file__))
 	spark_file_path = os.path.join(python_file_path +
 		                            "/../../../../spark/spark_latest/conf/slaves")
-	hadoop_file_path = os.path.join("/home/"+user+"/hadoop/etc/hadoop/slaves)
+	hadoop_file_path = os.path.join("/home/"+user+"/hadoop/etc/hadoop/slaves")
 	hadoop_slave=open(hadoop_file_path, "w")
 	spark_slave=open(spark_file_path, "w")
 	spark_slave.truncate()
@@ -243,7 +243,7 @@ def main(argv):
 		except:
 		    pass    
     print("Wait for instance ids to arrive...")
-    cmd_format = "vcl-opsworks request add --image-id 3630 -n slave -c {0} -l {1} --playbook main1.yml \"https://vcl.ncsu.edu/scheduling/index.php?mode=xmlrpccall\" \""+user+"@NCSU\""
+    cmd_format = "vcl-opsworks request add --image-id 4065 -n slave -c {0} -l {1} --playbook main1.yml \"https://vcl.ncsu.edu/scheduling/index.php?mode=xmlrpccall\" \""+user+"@NCSU\""
     command = cmd_format.format(COUNT, LENGTH)
     execute(command)
     #os.chdir(Driver_DIR)
