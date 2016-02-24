@@ -15,10 +15,6 @@ cd ..
 rm ansible-1.9.4.tar.gz
 sudo apt-get update -y
 
-sudo apt-get install software-properties-common -y
-sudo apt-add-repository ppa:ansible/ansible -y
-sudo apt-get update -y
-sudo apt-get install ansible -y
 #if [ ! -d "ssh_keys" ]; then
   #ssh-keygen -t rsa
   #mkdir ssh_keys

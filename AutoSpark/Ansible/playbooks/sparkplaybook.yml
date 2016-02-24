@@ -41,7 +41,7 @@
      command: mv /home/{{user}}/hadoop-2.6.0 /home/{{user}}/hadoop
 
    - name: writing to bashrc
-     lineinfile: dest=/home/{{user1}}/.bashrc
+     lineinfile: dest=/home/{{user}}/.bashrc
                 regexp=''
                 insertafter=EOF
                 line='export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_INSTALL=/home/aagrawa8/hadoop\nexport PATH=$PATH:$HADOOP_INSTALL/bin\nexport PATH=$PATH:$HADOOP_INSTALL/sbin\nexport HADOOP_MAPRED_HOME=$HADOOP_INSTALL\nexport HADOOP_COMMON_HOME=$HADOOP_INSTALL\nexport HADOOP_HDFS_HOME=$HADOOP_INSTALL\nexport YARN_HOME=$HADOOP_INSTALL\nexport HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_INSTALL/lib\nexport HADOOP_OPTS="-Djava.library.path=$HADOOP_INSTALL/lib/native"'
