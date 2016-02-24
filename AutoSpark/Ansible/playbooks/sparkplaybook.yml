@@ -40,6 +40,14 @@
      sudo: false
      command: mv /home/{{user}}/hadoop-2.6.0 /home/{{user}}/hadoop
 
+   - name: Create app/tmp
+     sudo: true
+     command: mkdir -p /app/hadoop/tmp
+
+   - name: Changing ownership of app/data
+     sudo: true
+     command: chown -R {{user}} /app/hadoop/tmp
+
    - name: writing to bashrc
      lineinfile: dest=/home/{{user}}/.bashrc
                 regexp=''
@@ -59,5 +67,13 @@
                 line='export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_OPTS=-Djava.net.preferIPv4Stack=true'
 
    - name: Changing ownership
-     sudo: false
+     sudo: true
      command: chown -R {{user}} /home/{{user}}/hadoop
+
+   - name: Changing permissions of hadoop
+     sudo: true
+     command: chmod -R 777 /home/{{user}}/hadoop
+
+   - name: Changing permissions of app data
+     sudo: true
+     command: chmod 750 /app/hadoop/tmp

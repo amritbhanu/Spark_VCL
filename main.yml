@@ -38,7 +38,7 @@
      command: mv /home/{{user1}}/hadoop-2.6.0 /home/{{user1}}/hadoop
 
    - name: Changing ownership
-     sudo: false
+     sudo: true
      command: chown -R {{user1}} /home/{{user1}}/hadoop
 
    - name: writing to bashrc
@@ -55,10 +55,21 @@
      sudo: false
      command: mkdir -pv /home/{{user1}}/hadoop/logs
 
+   - name: Create app/tmp
+     sudo: true
+     command: mkdir -p /app/hadoop/tmp
+
+   - name: Changing ownership of app/data
+     sudo: true
+     command: chown -R {{user1}} /app/hadoop/tmp
 
    - name: Create directroy datanode
      sudo: false
      command: mkdir -pv /home/{{user1}}/hadoop/data/datanode
+
+   - name: Changing permissions of app data
+     sudo: true
+     command: chmod 750 /app/hadoop/tmp
 
    - name: writing to hadoop-env.sh
      lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/hadoop-env.sh
@@ -77,7 +88,7 @@
      lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/core-site.xml
                 regexp='^<configuration>'
                 insertafter='<configuration>'
-                line='<configuration>\n\t<property>\n\t\t<name>fs.defaultFS</name>\n\t\t<value>hdfs://{{inventory_hostname}}/</value>\n\t\t<description>NameNode URI</description>\n\t</property>'
+                line='<configuration>\n\t<property>\n\t\t<name>hadoop.tmp.dir</name>\n\t\t<value>/app/hadoop/tmp</value>\n\t</property>\n\t<property>\n\t\t<name>fs.defaultFS</name>\n\t\t<value>hdfs://{{inventory_hostname}}/</value>\n\t\t<description>NameNode URI</description>\n\t</property>'
                 state=present
 
    - name: Move mapred template to mapred-site
@@ -97,3 +108,7 @@
                 insertafter='<configuration>'
                 line='<configuration>\n\t<property>\n\t\t<name>yarn.nodemanager.aux-services</name>\n\t\t<value>mapreduce_shuffle</value>\n\t</property>\n\t<property>\n\t\t<name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>\n\t\t<value>org.apache.hadoop.mapred.ShuffleHandler</value>\n\t</property>\n\t<property>\n\t\t<name>yarn.resourcemanager.resource-tracker.address</name>\n\t\t<value>{{inventory_hostname}}:8025</value>\n\t</property>\n\t<property>\n\t<name>yarn.resourcemanager.scheduler.address</name>\n\t\t<value>{{inventory_hostname}}:8030</value>\n\t</property>\n\t<property>\n\t\t<name>yarn.resourcemanager.address</name>\n\t\t<value>{{inventory_hostname}}:8050</value>\n\t</property>'
                 state=present
+
+   - name: Changing permissions of hadoop
+     sudo: true
+     command: chmod -R 777 /home/{{user1}}/hadoop
