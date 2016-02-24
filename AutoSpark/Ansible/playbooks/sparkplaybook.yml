@@ -56,7 +56,7 @@
      lineinfile: dest=/home/{{user}}/hadoop/etc/hadoop/hadoop-env.sh
                 regexp=''
                 insertafter=EOF
-                line='export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64'
+                line='export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_OPTS=-Djava.net.preferIPv4Stack=true'
 
    - name: Changing ownership
      sudo: false
