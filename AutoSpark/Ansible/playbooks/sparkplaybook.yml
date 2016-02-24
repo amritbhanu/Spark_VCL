@@ -30,15 +30,15 @@
 
    - name: download hadoop
      sudo: false
-     get_url: url=http://mirrors.sonic.net/apache/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz dest=/home/{{user1}}/
+     get_url: url=http://mirrors.sonic.net/apache/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz dest=/home/{{user}}/
 
    - name: Unarchive hadoop download
      sudo: false
-     unarchive: src=/home/{{user1}}/hadoop-2.6.0.tar.gz dest=/home/{{user1}}/ copy=no
+     unarchive: src=/home/{{user}}/hadoop-2.6.0.tar.gz dest=/home/{{user}}/ copy=no
 
    - name: Move hadoop-2.6 dir to hadoop
      sudo: false
-     command: mv /home/{{user1}}/hadoop-2.6.0 /home/{{user1}}/hadoop
+     command: mv /home/{{user}}/hadoop-2.6.0 /home/{{user}}/hadoop
 
    - name: writing to bashrc
      lineinfile: dest=/home/{{user1}}/.bashrc
@@ -48,16 +48,16 @@
 
    - name: update bashrc
      sudo: false
-     shell: source /home/{{user1}}/.bashrc
+     shell: source /home/{{user}}/.bashrc
      args:
         executable: /bin/bash
 
    - name: writing to hadoop-env.sh
-     lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/hadoop-env.sh
+     lineinfile: dest=/home/{{user}}/hadoop/etc/hadoop/hadoop-env.sh
                 regexp=''
                 insertafter=EOF
                 line='export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64'
 
    - name: Changing ownership
      sudo: false
-     command: chown -R {{user1}} /home/{{user1}}/hadoop
+     command: chown -R {{user}} /home/{{user}}/hadoop
