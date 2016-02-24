@@ -131,7 +131,7 @@ def create_inventory_file(key_name, user):
 	python_file_path = os.path.dirname(os.path.abspath(__file__))
 	spark_file_path = os.path.join(python_file_path +
 		                            "/../../../../spark/spark_latest/conf/slaves")
-	hadoop_file_path = os.path.join(p"/home/"+user+"/hadoop/etc/hadoop/slaves)
+	hadoop_file_path = os.path.join("/home/"+user+"/hadoop/etc/hadoop/slaves)
 	hadoop_slave=open(hadoop_file_path, "w")
 	spark_slave=open(spark_file_path, "w")
 	spark_slave.truncate()
