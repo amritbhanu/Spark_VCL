@@ -1,4 +1,5 @@
 #from the source directory.
+~/hadoop/bin/hdfs namenode –format
 cp AutoSpark/Spark_Jobs/lda.zip ~
 cd ../
 mv spark/spark_latest/conf/spark-env.sh.template spark/spark_latest/conf/spark-env.sh

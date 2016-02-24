@@ -76,14 +76,14 @@
      lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/hdfs-site.xml
                 regexp='^<configuration>'
                 insertafter='<configuration>'
-                line='<property><name>dfs.namenode.name.dir</name><value>file:///home/{{user1}}/hadoop/data/namenode</value><description>NameNode directory for namespace and transaction logs storage.</description></property><property><name>dfs.replication</name><value>3</value></property><property><name>dfs.permissions</name><value>false</value></property><property><name>dfs.datanode.use.datanode.hostname</name><value>false</value></property><property><name>dfs.namenode.datanode.registration.ip-hostname-check</name><value>false</value></property><property><name>dfs.namenode.http-address</name><value>{{inventory_hostname}}:50070</value><description>Your NameNode hostname for http access.</description></property><property><name>dfs.namenode.secondary.http-address</name><value>{{inventory_hostname}}:50090</value><description>Your Secondary NameNode hostname for http access.</description></property>\n\n<property><name>dfs.datanode.data.dir</name><value>file:///home/{{user1}}/hadoop/data/datanode</value><description>DataNode directory</description></property><property><name>dfs.replication</name><value>3</value></property><property><name>dfs.permissions</name><value>false</value></property><property><name>dfs.datanode.use.datanode.hostname</name><value>false</value></property><property><name>dfs.namenode.http-address</name><value>{{inventory_hostname}}:50070</value><description>Your NameNode hostname for http access.</description></property><property><name>dfs.namenode.secondary.http-address</name><value>{{inventory_hostname}}:50090</value><description>Your Secondary NameNode hostname for http access.</description></property>'
+                line='<configuration>\n\t<property>\n\t\t<name>dfs.namenode.name.dir</name>\n\t\t<value>file:///home/{{user1}}/hadoop/data/namenode</value>\n\t\t<description>NameNode directory for namespace and transaction logs storage.</description>\n\t</property>\n\t<property>\n\t\t<name>dfs.replication</name>\n\t\t<value>3</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.permissions</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.datanode.use.datanode.hostname</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.datanode.registration.ip-hostname-check</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.http-address</name>\n\t\t<value>{{inventory_hostname}}:50070</value>\n\t\t<description>Your NameNode hostname for http access.</description>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.secondary.http-address</name>\n\t\t<value>{{inventory_hostname}}:50090</value>\n\t\t<description>Your Secondary NameNode hostname for http access.</description>\n\t</property>\n\n\t<property>\n\t\t<name>dfs.datanode.data.dir</name>\n\t\t<value>file:///home/{{user1}}/hadoop/data/datanode</value>\n\t\t<description>DataNode directory</description>\n\t</property>\n\t<property>\n\t\t<name>dfs.replication</name>\n\t\t<value>3</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.permissions</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.datanode.use.datanode.hostname</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.http-address</name>\n\t\t<value>{{inventory_hostname}}:50070</value>\n\t\t<description>Your NameNode hostname for http access.</description>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.secondary.http-address</name>\n\t\t<value>{{inventory_hostname}}:50090</value>\n\t\t<description>Your Secondary NameNode hostname for http access.</description>\n\t</property>'
                 state=present
 
    - name: add lines in core-site.xml
      lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/core-site.xml
                 regexp='^<configuration>'
                 insertafter='<configuration>'
-                line='<property><name>fs.defaultFS</name><value>hdfs://{{inventory_hostname}}/</value><description>NameNode URI</description></property>'
+                line='<configuration>\n\t<property>\n\t\t<name>fs.defaultFS</name>\n\t\t<value>hdfs://{{inventory_hostname}}/</value>\n\t\t<description>NameNode URI</description>\n\t</property>'
                 state=present
 
    - name: Move mapred template to mapred-site
@@ -94,17 +94,12 @@
      lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/mapred-site.xml
                 regexp='^<configuration>'
                 insertafter='<configuration>'
-                line='<property><name>mapreduce.framework.name</name><value>yarn</value></property>'
+                line='<configuration>\n\t<property>\n\t\t<name>mapreduce.framework.name</name>\n\t\t<value>yarn</value>\n\t</property>'
                 state=present
 
    - name: add lines in yarn-site.xml
      lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/yarn-site.xml
                 regexp='^<configuration>'
                 insertafter='<configuration>'
-                line='<property><name>yarn.nodemanager.aux-services</name><value>mapreduce_shuffle</value></property><property><name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name><value>org.apache.hadoop.mapred.ShuffleHandler</value></property><property><name>yarn.resourcemanager.resource-tracker.address</name><value>{{inventory_hostname}}:8025</value></property><property><name>yarn.resourcemanager.scheduler.address</name><value>{{inventory_hostname}}:8030</value></property><property><name>yarn.resourcemanager.address</name><value>{{inventory_hostname}}:8050</value></property>'
+                line='<configuration>\n\t<property>\n\t\t<name>yarn.nodemanager.aux-services</name>\n\t\t<value>mapreduce_shuffle</value>\n\t</property>\n\t<property>\n\t\t<name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>\n\t\t<value>org.apache.hadoop.mapred.ShuffleHandler</value>\n\t</property>\n\t<property>\n\t\t<name>yarn.resourcemanager.resource-tracker.address</name>\n\t\t<value>{{inventory_hostname}}:8025</value>\n\t</property>\n\t<property>\n\t<name>yarn.resourcemanager.scheduler.address</name>\n\t\t<value>{{inventory_hostname}}:8030</value>\n\t</property>\n\t<property>\n\t\t<name>yarn.resourcemanager.address</name>\n\t\t<value>{{inventory_hostname}}:8050</value>\n\t</property>'
                 state=present
-
-   - name: hdfs namenode format
-     sudo: false
-     shell: hdfs namenode -format
-
