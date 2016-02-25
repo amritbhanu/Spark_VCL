@@ -38,18 +38,17 @@ hadoop fs -put <data_file_full_path> /user/<unity-id>/In/<file_name_at_destinati
 	- <unity-id> - unity-id
 	- <file_name_at_destination> - filename
 
+~/spark/spark_latest/bin/spark-submit --class 1 2 --master 3 4 5 6
 ssh <unity-id>@<master-ip> 'sudo ~/spark/spark_latest/bin/spark-submit --driver-memory 1 --executor-memory 2 --class 3 4 --master 5 6 7 8'
 	- <unity-id> - unity-id
 	- <master-ip> - current nodes ip address
-	- 1 - Ram like (2G, 3G)
-	- 2 - Ram like (2G, 3G)
-	- 3 - Class of scala file - In our example, I have provided you with the lda.jar scala example. (lda.lda)
-	- 4 - Jar target path - In our example, I have provided you with the lda.jar scala example. (lda/target/lda-0.0.1.jar)
-	- 5 - Spark Url - Which is of the form spark://<master-ip>:7077
-	- 6 - Data filename which you put on hdfs. (filename)
-	- 7 - <master-ip>
-	- 8 - <unity-id>
-	- NOTE: You can use your own examples but then you will have to transfer the data file and the scala code or jar files accordingly. Argument 3, 4 and 6 will change accordingly.
+	- 1 - Class of scala file - In our example, I have provided you with the lda.jar scala example. (lda.lda)
+	- 2 - Jar target path - In our example, I have provided you with the lda.jar scala example. (lda/target/lda-0.0.1.jar)
+	- 3 - Spark Url - Which is of the form spark://<master-ip>:7077
+	- 4 - Data filename which you put on hdfs. (filename)
+	- 5 - <master-ip>
+	- 6 - <unity-id>
+	- NOTE: You can use your own examples but then you will have to transfer the data file and the scala code or jar files accordingly. Argument 1, 2 and 4 will change accordingly. And the executor memory and driver memory is set in the lda.scala code.
 ```
 
 - I packaged the lda example using maven and then zipped it. Zipped file can be found under Spark_VCL/AutoSpark/Spark_Jobs. And you can transfer the zipped file on master node using scp.
