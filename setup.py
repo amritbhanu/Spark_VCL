@@ -24,7 +24,6 @@ setup(name='VCLOpsworks',
         # "coverage",
         "click",
         "requests",
-        "ansible"
         ],
     setup_requires=[],
     entry_points="""
