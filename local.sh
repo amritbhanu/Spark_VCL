@@ -4,14 +4,6 @@ python setup.py install
 
 export ANSIBLE_HOST_KEY_CHECKING=False
 
-echo $1 > user.txt
-if [ ! -d "~/.ssh/id_rsa.pub" ]; then
-  ssh-keygen -t rsa
-  mkdir ssh_keys
-  cp ~/.ssh/id_rsa ssh_keys/id_rsa
-  cp ~/.ssh/id_rsa.pub ssh_keys/id_rsa.pub
-  # Control will enter here if $DIRECTORY doesn't exist.
-fi
 #this will create 1 instance and we will install the packages and whatever is needed for that.
 #apache spark 4065
 #ubuntu - 3630
