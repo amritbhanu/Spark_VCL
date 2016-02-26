@@ -1,7 +1,7 @@
 ## Steps for Spinning AutoSpark on Ubuntu VCL nodes
 
 ### For setting up master nodes
-- On your local machine, git clone this repository, come to this directory and run **./user_package.sh**. Care to read the comments in the shell script.
+- On your local machine, git clone this repository, come to this directory and run **./user_package.sh**.
 
 - Open the id_rsa.pub file using **vi ~/.ssh/id_rsa.pub** and copy the keys. Paste the keys into [https://vcl.ncsu.edu/scheduling/] -> log in using your unity id -> goto **User Preferences** -> General Preferences -> Public keys -> Paste the copied keys.
 
@@ -15,7 +15,7 @@
 
 - You will see a directory automatically generated as "Spark_VCL". Change to this directory, and  open the main1.yml file and edit at line 3 "unity-id" with your unity-id.
 
-- On the master node, come to this directory and run **./Master_package.sh**. Care to read the comments in the shell script.
+- On the master node, come to this directory and run **./Master_package.sh**.
 
 - Now from the Spark_VCL directory, Run **./setup.sh unity-id**. It will ask for unity-id password.
 

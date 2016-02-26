@@ -13,4 +13,3 @@ sudo python setup.py install
 cd ..
 rm ansible-1.9.4.tar.gz
 sudo rm -rf ansible-1.9.4
-#Check if ansible is properly installed by going to terminal, write "python". The python interpereter will start and then type "from ansible.playbook import PlayBook". If there is no error then it is properly installed, else run the above step #2 manually. 
