@@ -39,7 +39,7 @@ hadoop fs -put <data_file_full_path> /user/<unity-id>/In/<file_name_at_destinati
 	- <unity-id> - unity-id
 	- <file_name_at_destination> - filename
 
-~/spark/spark_latest/bin/spark-submit --driver-memory 1 --executor-memory 2 --class 3 4 --master 5 6 7 8'
+~/spark/spark_latest/bin/spark-submit --driver-memory 1 --executor-memory 2 --class 3 4 --master 5 6 7 8
 	- 1 - Ram like (2G, 3G)
 	- 2 - Ram like (2G, 3G)
 	- 3 - Class of scala file - In our example, I have provided you with the lda.jar scala example. (lda.lda)
