@@ -38,6 +38,7 @@ hadoop fs -put <data_file_full_path> /user/<unity-id>/In/<file_name_at_destinati
 	- <data_file_full_path> the data file which you want to load (generally ~/filename).
 	- <unity-id> - unity-id
 	- <file_name_at_destination> - filename
+~/spark/spark_latest/sbin/start-all.sh
 
 ~/spark/spark_latest/bin/spark-submit --driver-memory 1 --executor-memory 2 --class 3 4 --master 5 6 7 8
 	- 1 - Ram like (2G, 3G)
