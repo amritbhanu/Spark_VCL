@@ -53,4 +53,3 @@ hadoop fs -put <data_file_full_path> /user/<unity-id>/In/<file_name_at_destinati
 ```
 
 - I packaged the lda example using maven and then zipped it. Zipped file can be found under Spark_VCL/AutoSpark/Spark_Jobs. And you can transfer the zipped file on master node using scp.
-- Might need to change the replication datanode stuffs.
