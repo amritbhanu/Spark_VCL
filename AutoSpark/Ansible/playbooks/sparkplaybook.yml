@@ -38,7 +38,7 @@
 
    - name: Move hadoop-2.6 dir to hadoop
      sudo: false
-     command: mv /home/{{user1}}/hadoop-2.6.0 /home/{{user1}}/hadoop
+     command: mv /home/{{user}}/hadoop-2.6.0 /home/{{user}}/hadoop
 
    - name: Create app/tmp
      sudo: true
