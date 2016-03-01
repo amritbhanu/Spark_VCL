@@ -37,10 +37,6 @@
      sudo: false
      command: mv /home/{{user1}}/hadoop-2.6.0 /home/{{user1}}/hadoop
 
-   - name: Changing ownership
-     sudo: true
-     command: chown -R {{user1}} /home/{{user1}}/hadoop
-
    - name: writing to bashrc
      lineinfile: dest=/home/{{user1}}/.bashrc
                 regexp=''
@@ -81,7 +77,7 @@
      lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/hdfs-site.xml
                 regexp='^<configuration>'
                 insertafter='<configuration>'
-                line='<configuration>\n\t<property>\n\t\t<name>dfs.namenode.name.dir</name>\n\t\t<value>file:///home/{{user1}}/hadoop/data/namenode</value>\n\t\t<description>NameNode directory for namespace and transaction logs storage.</description>\n\t</property>\n\t<property>\n\t\t<name>dfs.replication</name>\n\t\t<value>3</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.permissions</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.datanode.use.datanode.hostname</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.datanode.registration.ip-hostname-check</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.http-address</name>\n\t\t<value>{{inventory_hostname}}:50070</value>\n\t\t<description>Your NameNode hostname for http access.</description>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.secondary.http-address</name>\n\t\t<value>{{inventory_hostname}}:50090</value>\n\t\t<description>Your Secondary NameNode hostname for http access.</description>\n\t</property>\n\n\t<property>\n\t\t<name>dfs.datanode.data.dir</name>\n\t\t<value>file:///home/{{user1}}/hadoop/data/datanode</value>\n\t\t<description>DataNode directory</description>\n\t</property>\n\t<property>\n\t\t<name>dfs.replication</name>\n\t\t<value>3</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.permissions</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.datanode.use.datanode.hostname</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.http-address</name>\n\t\t<value>{{inventory_hostname}}:50070</value>\n\t\t<description>Your NameNode hostname for http access.</description>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.secondary.http-address</name>\n\t\t<value>{{inventory_hostname}}:50090</value>\n\t\t<description>Your Secondary NameNode hostname for http access.</description>\n\t</property>'
+                line='<configuration>\n\t<property>\n\t\t<name>dfs.namenode.name.dir</name>\n\t\t<value>file:///home/{{user1}}/hadoop/data/namenode</value>\n\t\t<description>NameNode directory for namespace and transaction logs storage.</description>\n\t</property>\n\t<property>\n\t\t<name>dfs.replication</name>\n\t\t<value>50</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.permissions</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.datanode.use.datanode.hostname</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.datanode.registration.ip-hostname-check</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.http-address</name>\n\t\t<value>{{inventory_hostname}}:50070</value>\n\t\t<description>Your NameNode hostname for http access.</description>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.secondary.http-address</name>\n\t\t<value>{{inventory_hostname}}:50090</value>\n\t\t<description>Your Secondary NameNode hostname for http access.</description>\n\t</property>'
                 state=present
 
    - name: add lines in core-site.xml
@@ -112,3 +108,7 @@
    - name: Changing permissions of hadoop
      sudo: true
      command: chmod -R 777 /home/{{user1}}/hadoop
+
+   - name: Changing ownership
+     sudo: true
+     command: chown -R {{user1}} /home/{{user1}}/hadoop
