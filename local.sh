@@ -27,5 +27,5 @@ cat ~/.ssh/id_rsa | ssh $1@$val "cat >> ~/.ssh/id_rsa; chmod 600 ~/.ssh/id_rsa"
 #distributed file system
 
 #Sending file to master node.
-scp /home/amrit/GITHUB/Enron/Datasets/SE/jones.txt $1@$val:/home/$1/jones.txt
+#scp /home/amrit/GITHUB/Enron/Datasets/SE/jones.txt $1@$val:/home/$1/jones.txt
 #scp /home/amrit/GITHUB/Enron/Datasets/SE/cs.txt $1@$val:/home/$1/cs.txt
