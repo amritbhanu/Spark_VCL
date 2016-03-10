@@ -14,3 +14,7 @@ sudo python setup.py install
 cd ..
 rm ansible-1.9.4.tar.gz
 sudo rm -rf ansible-1.9.4
+
+export ANSIBLE_HOST_KEY_CHECKING=False
+sudo sh -c "echo \"StrictHostKeyChecking no\" >> /etc/ssh/ssh_config"
+sudo sh -c "echo \"UserKnownHostsFile /dev/null\" >> /etc/ssh/ssh_config"
