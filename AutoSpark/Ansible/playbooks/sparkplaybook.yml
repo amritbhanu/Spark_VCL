@@ -8,10 +8,6 @@
   user: "{{user}}"
 
   tasks:
-   - name: Install scala 
-     sudo: true
-     apt: pkg=scala state=installed update_cache=true
-
    - name: create spark dir
      sudo: false
      file: path=/home/{{user}}/spark state=directory mode=0755

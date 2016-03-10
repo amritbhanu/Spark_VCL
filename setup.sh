@@ -7,7 +7,6 @@ touch spark/spark_latest/conf/slaves
 unzip lda.zip
 rm lda.zip
 cd Spark_VCL
-sudo apt-get update -y
 
 wget https://pypi.python.org/packages/source/a/ansible/ansible-1.9.4.tar.gz
 tar -xvf ansible-1.9.4.tar.gz
