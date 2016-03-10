@@ -22,3 +22,7 @@ chmod 700 ~/.ssh
 chmod 600 ~/.ssh/id_rsa
 chmod 600 ~/.ssh/id_rsa.pub
 #Copying id_rsa.pub key on the user preferences, ssh-key authentication
+
+export ANSIBLE_HOST_KEY_CHECKING=False
+sudo sh -c "echo \"StrictHostKeyChecking no\" >> /etc/ssh/ssh_config"
+sudo sh -c "echo \"UserKnownHostsFile /dev/null\" >> /etc/ssh/ssh_config"
