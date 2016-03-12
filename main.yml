@@ -21,9 +21,20 @@
      sudo: false
      unarchive: src=/home/{{user1}}/spark/spark-1.6.0-bin-hadoop2.6.tgz dest=/home/{{user1}}/spark copy=no
 
+   - name: Delete spark_folder
+     sudo: true
+     shell: sudo su - root -c 'rm -rf /home/{{user1}}/spark/spark_latest'
+     args:
+        executable: /bin/bash
+
+   - name: Delete hadoop_folder
+     sudo: true
+     shell: sudo su - root -c 'rm -rf /home/{{user1}}/hadoop'
+     args:
+        executable: /bin/bash
+
    - name: Move spark dir to spark_latest
      sudo: false
-     shell: sudo su - root -c 'rm -rf /home/{{user1}}/spark/spark_latest'
      command: mv /home/{{user1}}/spark/spark-1.6.0-bin-hadoop2.6 /home/{{user1}}/spark/spark_latest
 
    - name: Changing ownership of spark directory
