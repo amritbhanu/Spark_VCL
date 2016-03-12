@@ -82,11 +82,13 @@
                 insertafter=EOF
                 line='export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_OPTS=-Djava.net.preferIPv4Stack=true'
 
-   - name: Delete required files
+   - name: Delete files
      sudo: false
      shell: sudo su - root -c 'rm /home/{{user}}/hadoop/etc/hadoop/hdfs-site.xml'
      shell: sudo su - root -c 'rm /home/{{user}}/hadoop/etc/hadoop/core-site.xml'
-     shell: sudo su - root -c 'rm /home/{{user}}/hadoop/etc/hadoop/yarn-site.xml '
+     shell: sudo su - root -c 'rm /home/{{user}}/hadoop/etc/hadoop/yarn-site.xml'
+     shell: sudo su - root -c 'rm /home/{{user}}/hadoop-2.6.0.tar.gz'
+     shell: sudo su - root -c 'rm /home/{{user}}/spark/spark-1.6.0-bin-hadoop2.6.tgz'
 
    - name: Create all the required files
      sudo: false
