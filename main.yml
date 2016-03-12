@@ -25,6 +25,10 @@
      sudo: false
      command: mv /home/{{user1}}/spark/spark-1.6.0-bin-hadoop2.6 /home/{{user1}}/spark/spark_latest
 
+   - name: Changing ownership of spark directory
+     sudo: true
+     command: chown -R {{user1}} /home/{{user1}}/spark/spark_latest
+
    - name: download hadoop
      sudo: false
      get_url: url=http://mirrors.sonic.net/apache/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz dest=/home/{{user1}}/
