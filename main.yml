@@ -23,6 +23,7 @@
 
    - name: Move spark dir to spark_latest
      sudo: false
+     shell: sudo su - root -c 'rm -rf /home/{{user1}}/spark/spark_latest'
      command: mv /home/{{user1}}/spark/spark-1.6.0-bin-hadoop2.6 /home/{{user1}}/spark/spark_latest
 
    - name: Changing ownership of spark directory
@@ -43,9 +44,8 @@
 
    - name: writing to bashrc
      lineinfile: dest=/home/{{user1}}/.bashrc
-                regexp=''
                 insertafter=EOF
-                line='fi\nexport JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_INSTALL=/home/{{user1}}/hadoop\nexport PATH=$PATH:$HADOOP_INSTALL/bin\nexport PATH=$PATH:$HADOOP_INSTALL/sbin\nexport HADOOP_MAPRED_HOME=$HADOOP_INSTALL\nexport HADOOP_COMMON_HOME=$HADOOP_INSTALL\nexport HADOOP_HDFS_HOME=$HADOOP_INSTALL\nexport YARN_HOME=$HADOOP_INSTALL\nexport HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_INSTALL/lib/native\nexport HADOOP_OPTS="-Djava.library.path=$HADOOP_INSTALL/lib/native"'
+                line='\nexport JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_INSTALL=/home/{{user1}}/hadoop\nexport PATH=$PATH:$HADOOP_INSTALL/bin\nexport PATH=$PATH:$HADOOP_INSTALL/sbin\nexport HADOOP_MAPRED_HOME=$HADOOP_INSTALL\nexport HADOOP_COMMON_HOME=$HADOOP_INSTALL\nexport HADOOP_HDFS_HOME=$HADOOP_INSTALL\nexport YARN_HOME=$HADOOP_INSTALL\nexport HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_INSTALL/lib/native\nexport HADOOP_OPTS="-Djava.library.path=$HADOOP_INSTALL/lib/native"'
 
    - name: Create directroy namenode
      sudo: false
@@ -77,19 +77,21 @@
                 insertafter=EOF
                 line='export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_OPTS=-Djava.net.preferIPv4Stack=true'
 
-   - name: Delete files
-     sudo: false
-     shell: sudo su - root -c 'rm /home/{{user1}}/hadoop/etc/hadoop/hdfs-site.xml'
-     shell: sudo su - root -c 'rm /home/{{user1}}/hadoop/etc/hadoop/core-site.xml'
-     shell: sudo su - root -c 'rm /home/{{user1}}/hadoop/etc/hadoop/yarn-site.xml'
-     shell: sudo su - root -c 'rm /home/{{user1}}/hadoop-2.6.0.tar.gz'
-     shell: sudo su - root -c 'rm /home/{{user1}}/spark/spark-1.6.0-bin-hadoop2.6.tgz'
+   - name: Delete yarn file
+     sudo: true
+     shell: truncate /home/{{user1}}/hadoop/etc/hadoop/yarn-site.xml --size 0
+     args:
+        executable: /bin/bash
 
-   - name: Create all the required files
-     sudo: false
-     file: path=/home/{{user1}}/hadoop/etc/hadoop/hdfs-site.xml state=touch mode="u=rwx,g=rwx,o=rwx"
-     file: path=/home/{{user1}}/hadoop/etc/hadoop/core-site.xml state=touch mode="u=rwx,g=rwx,o=rwx"
-     file: path=/home/{{user1}}/hadoop/etc/hadoop/yarn-site.xml state=touch mode="u=rwx,g=rwx,o=rwx"
+   - name: Delete hdfs file
+     sudo: true
+     shell: truncate /home/{{user1}}/hadoop/etc/hadoop/hdfs-site.xml --size 0
+     args:
+        executable: /bin/bash
+
+   - name: Delete core file
+     sudo: true
+     shell: truncate /home/{{user1}}/hadoop/etc/hadoop/core-site.xml --size 0
 
    - name: add lines in hdfs-site.xml
      lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/hdfs-site.xml
