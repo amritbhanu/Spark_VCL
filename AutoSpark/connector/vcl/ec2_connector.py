@@ -145,6 +145,8 @@ def create_inventory_file(key_name, user):
 	# Writing the master inventory file
 	master_file.write("[sparknodes]\n")
 	master_file.write(key_name +"\n")
+        hadoop_slave.write(key_name +"\n")
+        spark_slave.write(key_name +"\n")
         slave_file_path = os.path.join(python_file_path +
 		                           "/../../Ansible/playbooks/slave_inventory")
 
