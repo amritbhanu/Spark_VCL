@@ -18,6 +18,7 @@ master_file_name = "master_inventory"
 slave_file_name = "slave_inventory"
 shell_script_master_name = "master.sh"
 shell_script_slave_name = "slave.sh"
+shell_script_slave_name1 = "slave1.sh"
 # User inputs constant for each run
 KEY_PATH = "~/.ssh/id_rsa"
 SECURITY_GROUPS = ["spark_cluster"]
@@ -185,6 +186,7 @@ def create_shell_script(key_name, user=user):
     script_file_master.write("SPARK_URL=\"\" MASTER_IP=\"")
     script_file_master.write(master)
     script_file_master.write("\"\' sparkplaybook.yml -i master_inventory\n")
+    script_file_master.close()
 
     # Slave shell script
     shell_script_slave_path = os.path.join(python_file_path +
@@ -201,7 +203,31 @@ def create_shell_script(key_name, user=user):
     script_file_slave.write("MASTER_IP=\"")
     script_file_slave.write(master)
     script_file_slave.write("\"\' sparkplaybook.yml -i slave_inventory\n")
+    script_file_slave.close()
 
+    # Slave shell script to remove hadoop data
+    shell_script_slave_path1 = os.path.join(python_file_path +
+                                           "/../../Ansible/playbooks/",
+                                           shell_script_slave_name1)
+
+    #print("Info: Master script path " + shell_script_slave_path)
+    script_file_slave1 = open(shell_script_slave_path1, "w")
+    script_file_slave1.truncate()
+    script_file_slave1.write("ansible-playbook -s --extra-vars ")
+    script_file_slave1.write("\'MASTER_YES=\"false\" USER=\""+user+"\" ")
+    script_file_slave1.write("SPARK_URL=\"spark://")
+    script_file_slave1.write(master + ":7077\" ")
+    script_file_slave1.write("MASTER_IP=\"")
+    script_file_slave1.write(master)
+    script_file_slave1.write("\"\' sparkplaybook1.yml -i slave_inventory\n")
+    script_file_slave1.write("ansible-playbook -s --extra-vars ")
+    script_file_slave1.write("\'MASTER_YES=\"false\" USER=\""+user+"\" ")
+    script_file_slave1.write("SPARK_URL=\"spark://")
+    script_file_slave1.write(master + ":7077\" ")
+    script_file_slave1.write("MASTER_IP=\"")
+    script_file_slave1.write(master)
+    script_file_slave1.write("\"\' sparkplaybook1.yml -i master_inventory\n")
+    script_file_slave1.close()
 
 def main(argv):
 

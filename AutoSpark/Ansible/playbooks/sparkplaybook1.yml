@@ -1,0 +1,57 @@
+---
+- hosts: sparknodes
+  vars:
+    master: "{{ MASTER_YES }}"
+    spark_url: "{{ SPARK_URL }}"
+    user: "{{ USER }}"
+    master_ip: "{{ MASTER_IP }}"
+  user: "{{user}}"
+
+  tasks:
+   - name: Delete /app/hadoop/tmp
+     sudo: true
+     shell: sudo su - root -c 'rm -rf /app/hadoop/tmp/'
+     args:
+        executable: /bin/bash
+
+   - name: Delete datanode
+     sudo: true
+     shell: sudo su - root -c 'rm -rf /home/{{user}}/hadoop/data/datanode'
+     args:
+        executable: /bin/bash
+
+   - name: Delete datanode
+     sudo: true
+     shell: sudo su - root -c 'rm -rf /home/{{user}}/hadoop/data/namenode'
+     args:
+        executable: /bin/bash
+
+   - name: Delete datanode
+     sudo: true
+     shell: sudo su - root -c 'rm -rf /home/{{user}}/hadoop/logs'
+     args:
+        executable: /bin/bash
+
+   - name: Create app/tmp
+     sudo: true
+     command: mkdir -p /app/hadoop/tmp
+
+   - name: Changing ownership of app/data
+     sudo: true
+     command: chown -R {{user}} /app/hadoop/tmp
+
+   - name: Changing permissions of app data
+     sudo: true
+     command: chmod 750 /app/hadoop/tmp
+
+   - name: Create directroy datanode
+     sudo: false
+     command: mkdir -pv /home/{{user}}/hadoop/data/datanode
+
+   - name: Create directroy namenode
+     sudo: false
+     command: mkdir -pv /home/{{user}}/hadoop/data/namenode
+
+   - name: Create directroy logs
+     sudo: false
+     command: mkdir -pv /home/{{user}}/hadoop/logs
