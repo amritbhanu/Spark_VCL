@@ -53,3 +53,4 @@ hadoop fs -put <data_file_full_path> /user/<unity-id>/In/<file_name_at_destinati
 ```
 
 - I packaged the lda example using maven and then zipped it. Zipped file can be found under Spark_VCL/AutoSpark/Spark_Jobs. And you can transfer the zipped file on master node using scp.
+- If you stop hadoopt some time, then you will need to delete the tmp folders on namenodes and datanodes. You need to change directory using  **cd ~/Spark_VCL/AutoSpark/Ansible/playbooks** and execute **./slave1.sh**
