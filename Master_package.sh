@@ -5,8 +5,8 @@ sudo apt-get install libgmp3-dev -y
 sudo apt-get install git -y
 sudo apt-get install maven cmake openjdk-7-jdk -y
 sudo add-apt-repository ppa:fkrull/deadsnakes -y
-sudo apt-get update
-sudo apt-get install python2.6 python2.6-dev
+sudo apt-get update -y
+sudo apt-get install python2.6 python2.6-dev -y
 pip install pycrypto
 
 #Step 2: Instaling ansible
