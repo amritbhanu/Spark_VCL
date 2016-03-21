@@ -81,5 +81,6 @@ def add(config, image_id, start, length, count,node_type, url, username, passwor
 
 def thread_request(config, url,username, password, image_id, start, length, count1, node_type, playbook):
 	make_config(config, url, username, password)
+	#time.sleep(1)
 	opsworks = vclopsworks.VCLOpsworks(config, image_id, start, length, count1, node_type, playbook)
         opsworks.run()
