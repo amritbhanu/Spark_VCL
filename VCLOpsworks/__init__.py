@@ -4,7 +4,7 @@ import logging
 import config
 import vclopsworks
 import yaml
-import subprocess
+import subprocess, os, threading, time
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -46,7 +46,7 @@ def request(config):
 @click.password_option(help="password for VCL site")
 def add(config, image_id, start, length, count,node_type, url, username, password,playbook,
         role):
-    make_config(config, url, username, password)
+
     if start is None:
         start = "now"
     if length is None:
@@ -58,8 +58,28 @@ def add(config, image_id, start, length, count,node_type, url, username, passwor
     click.echo("start:" + str(start))
 
     if playbook:
-        opsworks = vclopsworks.VCLOpsworks(config, image_id, start, length, count, node_type, playbook)
-        opsworks.run()
-	cmd = "sudo ./master.sh"
+	python_file_path = os.path.dirname(os.getcwd())
+	master_file_path = os.path.join(python_file_path +
+				                    "/Spark_VCL/AutoSpark/Ansible/playbooks/master_file")
+	master_file = open(master_file_path, "w")
+	master_file.truncate()
+	slave_file_path = os.path.join(python_file_path +
+				                   "/Spark_VCL/AutoSpark/Ansible/playbooks/slave_file")
+
+	slave_file = open(slave_file_path, "w")
+	slave_file.truncate()
+	master_file.close()
+	slave_file.close()
+	threads=[]
+	for i in range(count):
+		threads.append(threading.Thread(target=thread_request, args=(config,url, username, password,image_id, start, length, 1, node_type, playbook)))
+		time.sleep(1)
+    	_ = [t.start() for t in threads]
+    	_ = [t.join() for t in threads]
+	#cmd = "sudo ./master.sh"
         #execute(cmd)
 
+def thread_request(config, url,username, password, image_id, start, length, count1, node_type, playbook):
+	make_config(config, url, username, password)
+	opsworks = vclopsworks.VCLOpsworks(config, image_id, start, length, count1, node_type, playbook)
+        opsworks.run()

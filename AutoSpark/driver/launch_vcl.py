@@ -68,7 +68,7 @@ def launch(args):
     ## Here we have already installed packages using vcl-opsworks.
     print("Executing slave.sh")
     cmd = "sudo ./slave.sh"
-    execute(cmd)
+    #execute(cmd)
 
 if __name__ == '__main__':
     sys.exit(launch(sys.argv[1:]))

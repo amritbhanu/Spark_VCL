@@ -3,7 +3,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 import threading, Queue
-
+import time
 
 class VCLApi(object):
     def __init__(self, url, username, password):
@@ -24,7 +24,7 @@ class VCLApi(object):
         rc = self.client.XMLRPCgetImages()
         return rc
 
-    def thread_request(self, image_id, start, length, queue ):
+    '''def thread_request(self, image_id, start, length, queue ):
          log.debug("adding request: image_id={} start={} length={}".format(image_id,
                       start, length))
          rc = self.client.XMLRPCaddRequest(image_id, start, length)
@@ -34,8 +34,17 @@ class VCLApi(object):
 	threads= [threading.Thread(target=self.thread_request, args=(image_id, start, length,self.queue )) for i in range(count)]
     	_ = [t.start() for t in threads]
     	_ = [t.join() for t in threads]
+	time.sleep(1)
 	for i in range(count):
-		yield self.queue.get(i)
+		yield self.queue.get(i)'''
+
+    def add_request(self, image_id, start, length, count=1):
+        requests = range(count)
+        for i in requests:
+            log.debug("adding request: image_id={} start={} length={}".format(image_id,
+                      start, length))
+            rc = self.client.XMLRPCaddRequest(image_id, start, length)
+            yield rc
 
     def end_request(self, request_id):
         return self.client.XMLRPCendRequest(request_id)
