@@ -8,7 +8,7 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 #apache spark 4065
 #ubuntu - 3630
 #centos - 3685
-vcl-opsworks request add --image-id 4065 --node-type master -c 10 -l $2 --playbook main.yml "https://vcl.ncsu.edu/scheduling/index.php?mode=xmlrpccall" "$1@NCSU"
+vcl-opsworks request add --image-id 4065 --node-type master -c 1 -l $2 --playbook main.yml "https://vcl.ncsu.edu/scheduling/index.php?mode=xmlrpccall" "$1@NCSU"
 #it will return a connecting ip address, use that to do ssh.
 
 dir=$(pwd)
