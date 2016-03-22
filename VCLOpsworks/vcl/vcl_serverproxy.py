@@ -25,7 +25,7 @@ class VCLServerProxy(xmlrpclib.ServerProxy):
             transport = vcl_transport.VCLTransport()
         self.__transport = transport
         self.__encoding = encoding
-        self.__verbose = verbose
+        self.__verbose = 0
         self.__allow_none = allow_none
 
     def __request(self, method_name, params):
@@ -37,7 +37,7 @@ class VCLServerProxy(xmlrpclib.ServerProxy):
             self.__passwd,
             self.__handler,
             request,
-            verbose=self.__verbose
+            verbose=0
         )
         if len(response) == 1:
             response = response[0]

@@ -9,6 +9,7 @@ import subprocess, os, threading, time
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 pass_config = click.make_pass_decorator(config.Config, ensure=True)
+lock = threading.Lock()
 
 def execute(command):
     print("Executing Command" + command)
@@ -46,7 +47,7 @@ def request(config):
 @click.password_option(help="password for VCL site")
 def add(config, image_id, start, length, count,node_type, url, username, password,playbook,
         role):
-
+    make_config(config, url, username, password)
     if start is None:
         start = "now"
     if length is None:
@@ -71,16 +72,21 @@ def add(config, image_id, start, length, count,node_type, url, username, passwor
 	master_file.close()
 	slave_file.close()
 	threads=[]
-	for i in range(count):
+        opsworks = vclopsworks.VCLOpsworks(config, image_id, start, length, count, node_type, playbook)
+        opsworks.run()
+	cmd = "sudo ./master.sh"
+	'''for i in range(count):
 		threads.append(threading.Thread(target=thread_request, args=(config,url, username, password,image_id, start, length, 1, node_type, playbook)))
-		time.sleep(1)
+		#time.sleep(1)
     	_ = [t.start() for t in threads]
     	_ = [t.join() for t in threads]
 	#cmd = "sudo ./master.sh"
         #execute(cmd)
 
 def thread_request(config, url,username, password, image_id, start, length, count1, node_type, playbook):
+	lock.acquire()
 	make_config(config, url, username, password)
 	#time.sleep(1)
 	opsworks = vclopsworks.VCLOpsworks(config, image_id, start, length, count1, node_type, playbook)
-        opsworks.run()
+	lock.release()
+        opsworks.run()'''

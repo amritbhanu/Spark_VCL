@@ -24,14 +24,14 @@ class VCLApi(object):
         rc = self.client.XMLRPCgetImages()
         return rc
 
-    '''def thread_request(self, image_id, start, length, queue ):
+    '''def thread_request(self, image_id, start, length):
          log.debug("adding request: image_id={} start={} length={}".format(image_id,
                       start, length))
          rc = self.client.XMLRPCaddRequest(image_id, start, length)
          self.queue.put( rc )
 
-    def add_request(self, image_id, start, length, count=1):
-	threads= [threading.Thread(target=self.thread_request, args=(image_id, start, length,self.queue )) for i in range(count)]
+    def add_request(self, image_id, start, length, count):
+	threads= [threading.Thread(target=self.thread_request, args=(image_id, start, length)) for i in range(count)]
     	_ = [t.start() for t in threads]
     	_ = [t.join() for t in threads]
 	time.sleep(1)
