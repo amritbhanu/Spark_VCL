@@ -10,6 +10,8 @@ from ansible import utils
 from ansible import callbacks
 from ansible.inventory.group import Group
 from ansible.inventory.host import Host
+from multiprocessing import Process
+import threading, Queue
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
@@ -23,8 +25,19 @@ class VCLOpsworks(object):
         self.count = count
         self.node_type = node_type
         self.hosts = {}
+	self.queue = Queue.Queue()
         self.MIN_SLEEP = 10
         self.playbook = playbook
+
+    def method(self, image_id, start, length, count):
+	li=[]
+	#while len(li)!=count:
+	#print("here\n")
+	self.queue.put(self.config.api.add_request(image_id=image_id,
+                                                    start=start,
+                                                    length=length,
+                                                    count=count))
+	#self.queue.put(li)
 
     def run(self):
 	python_file_path = os.path.dirname(os.getcwd())
@@ -120,7 +133,8 @@ class VCLOpsworks(object):
 				                    "/Spark_VCL/AutoSpark/Ansible/playbooks/master_file")
 		master_file = open(master_file_path, "a+")
 		#master_file.truncate()
-		master_file.write(cluster_info.keys()[0] +"\n")
+		if (cluster_info.keys()!=0):
+			master_file.write(cluster_info.keys()[0] +"\n")
 		master_file.close()
 		'''if (cluster_info.keys()>1):
 			slave_file_path = os.path.join(python_file_path +

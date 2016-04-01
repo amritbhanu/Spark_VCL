@@ -2,8 +2,9 @@ from vcl_serverproxy import VCLServerProxy
 import logging
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
-import threading, Queue
+import threading
 import time
+from multiprocessing import Process, Queue
 
 class VCLApi(object):
     def __init__(self, url, username, password):
@@ -11,7 +12,7 @@ class VCLApi(object):
         self.username = username
         self.password = password
         self.verbose = 0
-	self.queue = Queue.Queue()
+	self.queue = Queue()
         self.client = VCLServerProxy(self.url, self.username, self.password, verbose=0)
 
     def test(self, test_string):
@@ -24,27 +25,37 @@ class VCLApi(object):
         rc = self.client.XMLRPCgetImages()
         return rc
 
-    '''def thread_request(self, image_id, start, length):
+    def thread_request(self, image_id, start, length):
          log.debug("adding request: image_id={} start={} length={}".format(image_id,
                       start, length))
          rc = self.client.XMLRPCaddRequest(image_id, start, length)
          self.queue.put( rc )
 
     def add_request(self, image_id, start, length, count):
-	threads= [threading.Thread(target=self.thread_request, args=(image_id, start, length)) for i in range(count)]
+	threads=[]
+	#queue = Queue.Queue()
+	for i in range(count):
+		threads.append(Process(target=self.thread_request, args=(image_id, start, length)))
+		#time.sleep(1)
     	_ = [t.start() for t in threads]
     	_ = [t.join() for t in threads]
-	time.sleep(1)
+	'''if count==1:
+		time.sleep(300)
+	else:
+		time.sleep(300)'''
+	#self.queue.join()
 	for i in range(count):
-		yield self.queue.get(i)'''
+	#while not self.queue.empty():
+		yield self.queue.get()
 
-    def add_request(self, image_id, start, length, count=1):
+
+    '''def add_request(self, image_id, start, length, count=1):
         requests = range(count)
         for i in requests:
             log.debug("adding request: image_id={} start={} length={}".format(image_id,
                       start, length))
             rc = self.client.XMLRPCaddRequest(image_id, start, length)
-            yield rc
+            yield rc'''
 
     def end_request(self, request_id):
         return self.client.XMLRPCendRequest(request_id)

@@ -5,6 +5,8 @@ import config
 import vclopsworks
 import yaml
 import subprocess, os, threading, time
+from multiprocessing import Process
+
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -74,19 +76,19 @@ def add(config, image_id, start, length, count,node_type, url, username, passwor
 	threads=[]
         opsworks = vclopsworks.VCLOpsworks(config, image_id, start, length, count, node_type, playbook)
         opsworks.run()
-	cmd = "sudo ./master.sh"
-	'''for i in range(count):
-		threads.append(threading.Thread(target=thread_request, args=(config,url, username, password,image_id, start, length, 1, node_type, playbook)))
-		#time.sleep(1)
+	'''cmd = "sudo ./master.sh"
+	for i in range(count):
+		threads.append(Process(target=thread_request, args=(config,url, username, password,image_id, start, length, 1, node_type, playbook)))
+		time.sleep(1)
     	_ = [t.start() for t in threads]
     	_ = [t.join() for t in threads]
 	#cmd = "sudo ./master.sh"
         #execute(cmd)
 
 def thread_request(config, url,username, password, image_id, start, length, count1, node_type, playbook):
-	lock.acquire()
+	#lock.acquire()
 	make_config(config, url, username, password)
 	#time.sleep(1)
 	opsworks = vclopsworks.VCLOpsworks(config, image_id, start, length, count1, node_type, playbook)
-	lock.release()
+	#lock.release()
         opsworks.run()'''
