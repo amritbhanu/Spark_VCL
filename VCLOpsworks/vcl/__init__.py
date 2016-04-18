@@ -36,17 +36,18 @@ class VCLApi(object):
 	#queue = Queue.Queue()
 	for i in range(count):
 		threads.append(Process(target=self.thread_request, args=(image_id, start, length)))
-		#time.sleep(1)
-    	_ = [t.start() for t in threads]
-    	_ = [t.join() for t in threads]
-	'''if count==1:
-		time.sleep(300)
-	else:
-		time.sleep(300)'''
-	#self.queue.join()
+		#time.sleep(10)
+	for t in threads:
+		t.start()
+		time.sleep(1)
+	'''for t in threads:
+		t.join()
+		time.sleep(1)'''	
+    	#_ = [t.start() for t in threads]
+    	#_ = [t.join() for t in threads]
 	for i in range(count):
-	#while not self.queue.empty():
 		yield self.queue.get()
+		time.sleep(2)
 
 
     '''def add_request(self, image_id, start, length, count=1):
