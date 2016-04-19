@@ -5,10 +5,9 @@
 
 - Open the id_rsa.pub file using **vi ~/.ssh/id_rsa.pub** and copy the keys. Paste the keys into [https://vcl.ncsu.edu/scheduling/] -> log in using your unity id -> goto **User Preferences** -> General Preferences -> Public keys -> Paste the copied keys.
 
+- In the Spark_VCL directory, open main.yml file and edit at line 4 "unity-id" with your unity-id.
 
 - Now from the Spark_VCL directory, you might want to edit the **local.sh** at line 30 specifying the full path of data file on which you want to run spark jobs. After that, run **./local.sh unity-id minutes**. Replace "unity-id" with the one provided to you by NC State and replace the minutes with integer value for which you want to reserve the master node for (Multiples of 60). It will ask for unity-id password.
-
-- In the Spark_VCL directory, open main.yml file and edit at line 4 "unity-id" with your unity-id.
 
 ### For setting up the slave nodes
 - Your Master node is setup. Now run **ssh unity-id@ip_address**. Replace "unity-id" with your unity-id and replace "ip_address" with the ip_address generated at the above step.
