@@ -25,7 +25,7 @@ name - 		# any arbitrary strings
 count -		# No of slaves to be in the cluster or no. of VCL VMs you want to request.
 duration -	# Duration for each node reservation
 ```
-- Change directory to **cd AutoSpark/Ansible/playbooks** and run **sudo ./slave.sh**. Check if any of these tasks are red, if yes then run it again else proceed.
+- Change directory to **cd AutoSpark/Ansible/playbooks** and run **./slave.sh**. Check if any of these tasks are red, if yes then run it again else proceed.
 - After the successful completion of the above setup, you will have to run these commands from the **home directory (cd ~)**.
 ```
 source ~/.bashrc
