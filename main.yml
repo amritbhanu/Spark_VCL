@@ -120,7 +120,7 @@
 
    - name: Move mapred template to mapred-site
      sudo: false
-     command: cp /home/{{user1}}/hadoop/etc/hadoop/mapred-site.xml.template /home/{{user1}}/hadoop/etc/hadoop/mapred-site.xml	
+     command: cp /home/{{user1}}/hadoop/etc/hadoop/mapred-site.xml.template /home/{{user1}}/hadoop/etc/hadoop/mapred-site.xml
 
    - name: add lines in mapred-site.xml
      lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/mapred-site.xml
