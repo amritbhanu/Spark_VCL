@@ -14,11 +14,11 @@
 
    - name: download sources
      sudo: false
-     get_url: url=http://ftp.wayne.edu/apache//spark/spark-1.6.0/spark-1.6.0-bin-hadoop2.6.tgz dest=/home/{{user}}/spark/
+     get_url: url=http://ftp.wayne.edu/apache//spark/spark-1.6.1/spark-1.6.1-bin-hadoop2.6.tgz dest=/home/{{user}}/spark/
 
    - name: Unarchive Spark download
      sudo: false
-     unarchive: src=/home/{{user}}/spark/spark-1.6.0-bin-hadoop2.6.tgz dest=/home/{{user}}/spark copy=no
+     unarchive: src=/home/{{user}}/spark/spark-1.6.1-bin-hadoop2.6.tgz dest=/home/{{user}}/spark copy=no
 
    - name: Delete spark_folder
      sudo: true
@@ -32,7 +32,7 @@
 
    - name: Move spark dir to spark_latest
      sudo: false
-     command: mv /home/{{user}}/spark/spark-1.6.0-bin-hadoop2.6 /home/{{user}}/spark/spark_latest
+     command: mv /home/{{user}}/spark/spark-1.6.1-bin-hadoop2.6 /home/{{user}}/spark/spark_latest
 
    - name: Changing ownership of spark directory
      sudo: true
