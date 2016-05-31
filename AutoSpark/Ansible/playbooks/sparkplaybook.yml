@@ -8,6 +8,29 @@
   user: "{{user}}"
 
   tasks:
+   - name: Install list of packages
+     sudo: true
+     apt: name={{item}} state=installed
+     with_items:
+      - build-dep
+      - libblas-dev
+      - liblapack-dev
+      - libatlas-base-dev
+      - gfortran
+      - python-matplotlib
+
+   - name: install numpy
+     sudo: true
+     command: pip install -U numpy
+
+   - name: install scipy
+     sudo: true
+     command: pip install -U scipy
+
+   - name: install scikit learn
+     sudo: true
+     command: pip install -U scikit-learn
+
    - name: create spark dir
      sudo: false
      file: path=/home/{{user}}/spark state=directory mode=0755
