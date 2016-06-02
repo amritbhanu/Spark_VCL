@@ -110,6 +110,12 @@
                 insertafter=EOF
                 line='export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_OPTS=-Djava.net.preferIPv4Stack=true'
 
+   - name: writing to spark-env.sh
+     lineinfile: dest=/home/{{user1}}/spark/spark_latest/conf/spark-env.sh
+                regexp=''
+                insertafter=EOF
+                line='export SPARK_MASTER_MEMORY="6G"\nexport SPARK_DRIVER_MEMORY="6G"\nexport SPARK_WORKER_MEMORY="6G"\nexport SPARK_EXECUTOR_MEMORY="6G"'
+
    - name: Delete yarn file
      sudo: true
      shell: truncate /home/{{user1}}/hadoop/etc/hadoop/yarn-site.xml --size 0
