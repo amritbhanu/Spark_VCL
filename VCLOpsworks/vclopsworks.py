@@ -54,6 +54,7 @@ class VCLOpsworks(object):
                                                     length=self.length,
                                                     count=self.count):
             if response["status"] == "success":
+		print(response)
                 log.info("request success")
                 request_id = response["requestid"]
                 log.info("request id {}".format(request_id))

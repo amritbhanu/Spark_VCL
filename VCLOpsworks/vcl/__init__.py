@@ -29,6 +29,7 @@ class VCLApi(object):
          log.debug("adding request: image_id={} start={} length={}".format(image_id,
                       start, length))
          rc = self.client.XMLRPCaddRequest(image_id, start, length)
+	 print(rc)
          self.queue.put( rc )
 
     def add_request(self, image_id, start, length, count):
