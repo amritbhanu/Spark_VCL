@@ -110,6 +110,10 @@
                 insertafter=EOF
                 line='export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_OPTS=-Djava.net.preferIPv4Stack=true'
 
+   - name: Move spark-env.template dir to spark-env.sh
+     sudo: false
+     command: mv /home/{{user1}}/spark/spark_latest/conf/spark-env.sh.template /home/{{user1}}/spark/spark_latest/conf/spark-env.sh
+
    - name: writing to spark-env.sh
      lineinfile: dest=/home/{{user1}}/spark/spark_latest/conf/spark-env.sh
                 regexp=''
