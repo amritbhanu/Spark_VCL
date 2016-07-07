@@ -34,7 +34,7 @@
      sudo: false
      file: path=/home/{{user}}/spark state=directory mode=0755
 
-   - name: download sources
+   - name: download spark
      sudo: false
      get_url: url=http://ftp.wayne.edu/apache//spark/spark-1.6.1/spark-1.6.1-bin-hadoop2.6.tgz dest=/home/{{user}}/spark/
 
