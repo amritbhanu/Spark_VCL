@@ -36,11 +36,11 @@
 
    - name: download spark
      sudo: false
-     get_url: url=http://ftp.wayne.edu/apache//spark/spark-2.2.1/spark-2.2.1-bin-hadoop2.7.tgz dest=/home/{{user1}}/spark/
+     get_url: url=http://ftp.wayne.edu/apache//spark/spark-2.2.1/spark-2.2.1-bin-hadoop2.7.tgz dest=/home/{{user}}/spark/
 
    - name: Unarchive Spark download
      sudo: false
-     unarchive: src=/home/{{user1}}/spark/spark-2.2.1-bin-hadoop2.7.tgz dest=/home/{{user1}}/spark copy=no
+     unarchive: src=/home/{{user}}/spark/spark-2.2.1-bin-hadoop2.7.tgz dest=/home/{{user}}/spark copy=no
 
    - name: Delete spark_folder
      sudo: true
@@ -54,7 +54,7 @@
 
    - name: Move spark dir to spark_latest
      sudo: false
-     command: mv /home/{{user1}}/spark/spark-2.2.1-bin-hadoop2.7 /home/{{user1}}/spark/spark_latest
+     command: mv /home/{{user}}/spark/spark-2.2.1-bin-hadoop2.7 /home/{{user}}/spark/spark_latest
 
    - name: Changing ownership of spark directory
      sudo: true
@@ -62,15 +62,15 @@
 
    - name: download hadoop
      sudo: false
-     get_url: url=http://mirrors.sonic.net/apache/hadoop/common/hadoop-2.9.0/hadoop-2.9.0.tar.gz dest=/home/{{user1}}/
+     get_url: url=http://mirrors.sonic.net/apache/hadoop/common/hadoop-2.9.0/hadoop-2.9.0.tar.gz dest=/home/{{user}}/
 
    - name: Unarchive hadoop download
      sudo: false
-     unarchive: src=/home/{{user1}}/hadoop-2.9.0.tar.gz dest=/home/{{user1}}/ copy=no
+     unarchive: src=/home/{{user}}/hadoop-2.9.0.tar.gz dest=/home/{{user}}/ copy=no
 
    - name: Move hadoop-2 dir to hadoop
      sudo: false
-     command: mv /home/{{user1}}/hadoop-2.9.0 /home/{{user1}}/hadoop
+     command: mv /home/{{user}}/hadoop-2.9.0 /home/{{user}}/hadoop
 
    - name: Create app/tmp
      sudo: true
