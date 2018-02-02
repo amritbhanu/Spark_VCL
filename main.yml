@@ -1,13 +1,14 @@
 ---
-- hosts: sparknodes
+- hosts: all
   vars:
-    master: "{{ MASTER_YES }}"
-    spark_url: "{{ SPARK_URL }}"
-    user: "{{ USER }}"
-    master_ip: "{{ MASTER_IP }}"
-  user: "{{user}}"
+    user1: aagrawa8
+  user: "{{user1}}"
 
   tasks:
+   - name: cloning repo
+     sudo: false
+     command: git clone https://github.com/amritbhanu/Spark_VCL.git
+
    - name: Install list of packages
      sudo: true
      apt: name={{item}} state=installed
@@ -32,7 +33,7 @@
 
    - name: create spark dir
      sudo: false
-     file: path=/home/{{user}}/spark state=directory mode=0755
+     file: path=/home/{{user1}}/spark state=directory mode=0755
 
    - name: download spark
      sudo: false
@@ -44,13 +45,15 @@
 
    - name: Delete spark_folder
      sudo: true
-     shell: sudo su - root -c 'rm -rf /home/{{user}}/spark/spark_latest'
+     shell: sudo su - root -c 'rm -rf /home/{{user1}}/spark/spark_latest'
      args:
         executable: /bin/bash
 
    - name: Delete hadoop_folder
      sudo: true
-     shell: sudo su - root -c 'rm -rf /home/{{user}}/hadoop'
+     shell: sudo su - root -c 'rm -rf /home/{{user1}}/hadoop'
+     args:
+        executable: /bin/bash
 
    - name: Move spark dir to spark_latest
      sudo: false
@@ -58,7 +61,7 @@
 
    - name: Changing ownership of spark directory
      sudo: true
-     command: chown -R {{user}} /home/{{user}}/spark/spark_latest
+     command: chown -R {{user1}} /home/{{user1}}/spark/spark_latest
 
    - name: download hadoop
      sudo: false
@@ -72,112 +75,103 @@
      sudo: false
      command: mv /home/{{user1}}/hadoop-2.9.0 /home/{{user1}}/hadoop
 
+   - name: writing to bashrc
+     lineinfile: dest=/home/{{user1}}/.bashrc
+                insertafter=EOF
+                line='\nexport JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_INSTALL=/home/{{user1}}/hadoop\nexport PATH=$PATH:$HADOOP_INSTALL/bin\nexport PATH=$PATH:$HADOOP_INSTALL/sbin\nexport HADOOP_MAPRED_HOME=$HADOOP_INSTALL\nexport HADOOP_COMMON_HOME=$HADOOP_INSTALL\nexport HADOOP_HDFS_HOME=$HADOOP_INSTALL\nexport YARN_HOME=$HADOOP_INSTALL\nexport HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_INSTALL/lib/native\nexport HADOOP_OPTS="-Djava.library.path=$HADOOP_INSTALL/lib/native"'
+
+   - name: Create directroy namenode
+     sudo: false
+     command: mkdir -pv /home/{{user1}}/hadoop/data/namenode
+
+   - name: Create directroy logs
+     sudo: false
+     command: mkdir -pv /home/{{user1}}/hadoop/logs
+
    - name: Create app/tmp
      sudo: true
      command: mkdir -p /app/hadoop/tmp
 
    - name: Changing ownership of app/data
      sudo: true
-     command: chown -R {{user}} /app/hadoop/tmp
-
-   - name: writing to bashrc
-     lineinfile: dest=/home/{{user}}/.bashrc
-                insertafter=EOF
-                line='\nexport JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_INSTALL=/home/{{user}}/hadoop\nexport PATH=$PATH:$HADOOP_INSTALL/bin\nexport PATH=$PATH:$HADOOP_INSTALL/sbin\nexport HADOOP_MAPRED_HOME=$HADOOP_INSTALL\nexport HADOOP_COMMON_HOME=$HADOOP_INSTALL\nexport HADOOP_HDFS_HOME=$HADOOP_INSTALL\nexport YARN_HOME=$HADOOP_INSTALL\nexport HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_INSTALL/lib/native\nexport HADOOP_OPTS="-Djava.library.path=$HADOOP_INSTALL/lib/native"'
-
-   - name: update bashrc
-     sudo: false
-     shell: source /home/{{user}}/.bashrc
-     args:
-        executable: /bin/bash
-
-   - name: Create directroy namenode
-     sudo: false
-     command: mkdir -pv /home/{{user}}/hadoop/data/namenode
-
-   - name: Create directroy logs
-     sudo: false
-     command: mkdir -pv /home/{{user}}/hadoop/logs
+     command: chown -R {{user1}} /app/hadoop/tmp
 
    - name: Create directroy datanode
      sudo: false
-     command: mkdir -pv /home/{{user}}/hadoop/data/datanode
+     command: mkdir -pv /home/{{user1}}/hadoop/data/datanode
 
    - name: Changing permissions of app data
      sudo: true
      command: chmod 750 /app/hadoop/tmp
 
    - name: writing to hadoop-env.sh
-     lineinfile: dest=/home/{{user}}/hadoop/etc/hadoop/hadoop-env.sh
+     lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/hadoop-env.sh
                 regexp=''
                 insertafter=EOF
                 line='export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_OPTS=-Djava.net.preferIPv4Stack=true'
 
+   - name: Move spark-env.template dir to spark-env.sh
+     sudo: false
+     command: mv /home/{{user1}}/spark/spark_latest/conf/spark-env.sh.template /home/{{user1}}/spark/spark_latest/conf/spark-env.sh
+
+   - name: writing to spark-env.sh
+     lineinfile: dest=/home/{{user1}}/spark/spark_latest/conf/spark-env.sh
+                regexp=''
+                insertafter=EOF
+                line='export SPARK_MASTER_MEMORY="6G"\nexport SPARK_DRIVER_MEMORY="6G"\nexport SPARK_WORKER_MEMORY="6G"\nexport SPARK_EXECUTOR_MEMORY="6G"'
+
    - name: Delete yarn file
      sudo: true
-     shell: truncate /home/{{user}}/hadoop/etc/hadoop/yarn-site.xml --size 0
+     shell: truncate /home/{{user1}}/hadoop/etc/hadoop/yarn-site.xml --size 0
      args:
         executable: /bin/bash
 
    - name: Delete hdfs file
      sudo: true
-     shell: truncate /home/{{user}}/hadoop/etc/hadoop/hdfs-site.xml --size 0
+     shell: truncate /home/{{user1}}/hadoop/etc/hadoop/hdfs-site.xml --size 0
      args:
         executable: /bin/bash
 
    - name: Delete core file
      sudo: true
-     shell: truncate /home/{{user}}/hadoop/etc/hadoop/core-site.xml --size 0
-     args:
-        executable: /bin/bash
+     shell: truncate /home/{{user1}}/hadoop/etc/hadoop/core-site.xml --size 0
 
    - name: add lines in hdfs-site.xml
-     lineinfile: dest=/home/{{user}}/hadoop/etc/hadoop/hdfs-site.xml
+     lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/hdfs-site.xml
                 regexp=''
                 insertafter='EOF'
-                line='<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>\n<configuration>\n\t<property>\n\t\t<name>dfs.datanode.data.dir</name>\n\t\t<value>file:///home/{{user}}/hadoop/data/datanode</value>\n\t\t<description>DataNode directory</description>\n\t</property>\n\t<property>\n\t\t<name>dfs.replication</name>\n\t\t<value>3</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.permissions</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.datanode.use.datanode.hostname</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.http-address</name>\n\t\t<value>{{master_ip}}:50070</value>\n\t\t<description>Your NameNode hostname for http access.</description>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.secondary.http-address</name>\n\t\t<value>{{master_ip}}:50090</value>\n\t\t<description>Your Secondary NameNode hostname for http access.</description>\n\t</property>\n</configuration>'
+                line='<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>\n<configuration>\n\t<property>\n\t\t<name>dfs.namenode.name.dir</name>\n\t\t<value>file:///home/{{user1}}/hadoop/data/namenode</value>\n\t\t<description>NameNode directory for namespace and transaction logs storage.</description>\n\t</property>\n\t<property>\n\t\t<name>dfs.replication</name>\n\t\t<value>3</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.permissions</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.datanode.use.datanode.hostname</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.datanode.registration.ip-hostname-check</name>\n\t\t<value>false</value>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.http-address</name>\n\t\t<value>{{inventory_hostname}}:50070</value>\n\t\t<description>Your NameNode hostname for http access.</description>\n\t</property>\n\t<property>\n\t\t<name>dfs.namenode.secondary.http-address</name>\n\t\t<value>{{inventory_hostname}}:50090</value>\n\t\t<description>Your Secondary NameNode hostname for http access.</description>\n\t</property>\n</configuration>'
                 state=present
 
    - name: add lines in core-site.xml
-     lineinfile: dest=/home/{{user}}/hadoop/etc/hadoop/core-site.xml
+     lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/core-site.xml
                 regexp=''
                 insertafter='EOF'
-                line='<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>\n<configuration>\n\t<property>\n\t\t<name>hadoop.tmp.dir</name>\n\t\t<value>/app/hadoop/tmp</value>\n\t</property>\n\t<property>\n\t\t<name>fs.defaultFS</name>\n\t\t<value>hdfs://{{master_ip}}/</value>\n\t\t<description>NameNode URI</description>\n\t</property>\n</configuration>'
+                line='<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>\n<configuration>\n\t<property>\n\t\t<name>hadoop.tmp.dir</name>\n\t\t<value>/app/hadoop/tmp</value>\n\t</property>\n\t<property>\n\t\t<name>fs.defaultFS</name>\n\t\t<value>hdfs://{{inventory_hostname}}/</value>\n\t\t<description>NameNode URI</description>\n\t</property>\n</configuration>'
                 state=present
 
    - name: Move mapred template to mapred-site
      sudo: false
-     command: cp /home/{{user}}/hadoop/etc/hadoop/mapred-site.xml.template /home/{{user}}/hadoop/etc/hadoop/mapred-site.xml
+     command: cp /home/{{user1}}/hadoop/etc/hadoop/mapred-site.xml.template /home/{{user1}}/hadoop/etc/hadoop/mapred-site.xml
 
    - name: add lines in mapred-site.xml
-     lineinfile: dest=/home/{{user}}/hadoop/etc/hadoop/mapred-site.xml
+     lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/mapred-site.xml
                 regexp='^<configuration>'
                 insertafter='<configuration>'
                 line='<configuration>\n\t<property>\n\t\t<name>mapreduce.framework.name</name>\n\t\t<value>yarn</value>\n\t</property>'
                 state=present
 
    - name: add lines in yarn-site.xml
-     lineinfile: dest=/home/{{user}}/hadoop/etc/hadoop/yarn-site.xml
+     lineinfile: dest=/home/{{user1}}/hadoop/etc/hadoop/yarn-site.xml
                 regexp=''
                 insertafter='EOF'
-                line='<?xml version="1.0"?>\n<configuration>\n\t<property>\n\t\t<name>yarn.nodemanager.aux-services</name>\n\t\t<value>mapreduce_shuffle</value>\n\t</property>\n\t<property>\n\t\t<name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>\n\t\t<value>org.apache.hadoop.mapred.ShuffleHandler</value>\n\t</property>\n\t<property>\n\t\t<name>yarn.resourcemanager.resource-tracker.address</name>\n\t\t<value>{{master_ip}}:8025</value>\n\t</property>\n\t<property>\n\t<name>yarn.resourcemanager.scheduler.address</name>\n\t\t<value>{{master_ip}}:8030</value>\n\t</property>\n\t<property>\n\t\t<name>yarn.resourcemanager.address</name>\n\t\t<value>{{master_ip}}:8050</value>\n\t</property>\n</configuration>'
+                line='<?xml version="1.0"?>\n<configuration>\n\t<property>\n\t\t<name>yarn.nodemanager.aux-services</name>\n\t\t<value>mapreduce_shuffle</value>\n\t</property>\n\t<property>\n\t\t<name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>\n\t\t<value>org.apache.hadoop.mapred.ShuffleHandler</value>\n\t</property>\n\t<property>\n\t\t<name>yarn.resourcemanager.resource-tracker.address</name>\n\t\t<value>{{inventory_hostname}}:8025</value>\n\t</property>\n\t<property>\n\t<name>yarn.resourcemanager.scheduler.address</name>\n\t\t<value>{{inventory_hostname}}:8030</value>\n\t</property>\n\t<property>\n\t\t<name>yarn.resourcemanager.address</name>\n\t\t<value>{{inventory_hostname}}:8050</value>\n\t</property>\n</configuration>'
                 state=present
-
-   - name: Move spark-env.template dir to spark-env.sh
-     sudo: false
-     command: mv /home/{{user}}/spark/spark_latest/conf/spark-env.sh.template /home/{{user}}/spark/spark_latest/conf/spark-env.sh
-
-   - name: writing to spark-env.sh
-     lineinfile: dest=/home/{{user}}/spark/spark_latest/conf/spark-env.sh
-                regexp=''
-                insertafter=EOF
-                line='export SPARK_MASTER_MEMORY="6G"\nexport SPARK_DRIVER_MEMORY="6G"\nexport SPARK_WORKER_MEMORY="6G"\nexport SPARK_EXECUTOR_MEMORY="6G"'
-
 
    - name: Changing permissions of hadoop
      sudo: true
-     command: chmod -R 777 /home/{{user}}/hadoop
+     command: chmod -R 777 /home/{{user1}}/hadoop
 
    - name: Changing ownership
      sudo: true
-     command: chown -R {{user}} /home/{{user}}/hadoop
+     command: chown -R {{user1}} /home/{{user1}}/hadoop
