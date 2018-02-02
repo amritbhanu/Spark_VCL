@@ -111,7 +111,7 @@
      lineinfile: dest=/home/{{user}}/hadoop/etc/hadoop/hadoop-env.sh
                 regexp=''
                 insertafter=EOF
-                line='export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_OPTS=-Djava.net.preferIPv4Stack=true'
+                line='export JAVA_HOME=/usr/lib/jvm/java-8-oracle\nexport HADOOP_OPTS=-Djava.net.preferIPv4Stack=true'
 
    - name: Delete yarn file
      sudo: true
