@@ -3,7 +3,7 @@ sudo apt-get install python-pip -y
 sudo apt-get install python-dev -y
 sudo apt-get install libgmp3-dev -y
 sudo apt-get install git -y
-sudo apt-get install maven cmake openjdk-7-jdk -y
+sudo apt-get install maven cmake -y
 pip install pycrypto
 
 #Step 2: Instaling ansible
