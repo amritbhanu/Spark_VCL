@@ -10,7 +10,7 @@
      command: git clone https://github.com/amritbhanu/Spark_VCL.git
 
    - name: Adding Java 8 key
-     shell: sudo su - root -c 'sudo add-apt-repository ppa:openjdk-r/ppa'
+     shell: sudo su - root -c 'sudo add-apt-repository ppa:openjdk-r/ppa -y'
      args:
         executable: /bin/bash
 
@@ -24,6 +24,28 @@
       - libatlas-base-dev
       - gfortran
       - python-matplotlib
+      - ipython
+      - ipython-notebook
+
+   - name: create pip dir
+     sudo: false
+     file: path=/home/{{user1}}/pip state=directory mode=0755
+
+   - name: download pip Upgrade
+     sudo: false
+     get_url: url=https://pypi.python.org/packages/e7/a8/7556133689add8d1a54c0b14aeff0acb03c64707ce100ecd53934da1aa13/pip-8.1.2.tar.gz dest=/home/{{user1}}/pip/
+
+   - name: Unarchive pip download
+     sudo: false
+     unarchive: src=/home/{{user1}}/pip/pip-8.1.2.tar.gz dest=/home/{{user1}}/pip copy=no
+
+   - name: Run python command
+     sudo: True
+     command: python /home/{{user1}}/pip/pip-8.1.2/setup.py install
+ 
+   - name: upgrade pip
+     sudo: true
+     command: pip install --upgrade pip
 
    - name: install numpy
      sudo: true
