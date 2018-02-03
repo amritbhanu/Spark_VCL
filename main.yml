@@ -40,12 +40,13 @@
      unarchive: src=/home/{{user1}}/pip/pip-8.1.2.tar.gz dest=/home/{{user1}}/pip copy=no
 
    - name: Run python command
-     sudo: false
+     sudo: true
      command: python /home/{{user1}}/pip/pip-8.1.2/setup.py install
  
-   - name: upgrade pip
-     sudo: true
-     command: pip install --upgrade pip
+   - name: Adding Java 8 key
+     shell: sudo su - root -c 'sudo pip install --upgrade pip'
+     args:
+        executable: /bin/bash
 
    - name: install scipy numpy scikit-learn pandas jupyter
      sudo: true
