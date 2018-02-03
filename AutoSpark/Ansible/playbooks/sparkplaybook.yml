@@ -39,12 +39,13 @@
      unarchive: src=/home/{{user}}/pip/pip-8.1.2.tar.gz dest=/home/{{user}}/pip copy=no
 
    - name: Run python command
-     sudo: false
-     command: python /home/{{user}}/pip/pip-8.1.2/setup.py install
- 
-   - name: upgrade pip
      sudo: true
-     command: pip install --upgrade pip
+     command: chdir=/home/{{user}}/pip/pip-8.1.2/ python setup.py install
+ 
+   - name: Upgrade python pip
+     shell: sudo su - root -c 'sudo pip install --upgrade pip'
+     args:
+        executable: /bin/bash
      
    - name: install scipy numpy scikit-learn pandas jupyter
      sudo: true
