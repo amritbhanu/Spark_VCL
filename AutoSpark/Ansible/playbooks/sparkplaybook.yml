@@ -39,7 +39,7 @@
      unarchive: src=/home/{{user}}/pip/pip-8.1.2.tar.gz dest=/home/{{user}}/pip copy=no
 
    - name: Run python command
-     sudo: True
+     sudo: false
      command: python /home/{{user}}/pip/pip-8.1.2/setup.py install
  
    - name: upgrade pip
