@@ -9,7 +9,7 @@
 
   tasks:
    - name: Adding Java 8 key
-     shell: sudo su - root -c 'sudo add-apt-repository ppa:openjdk-r/ppa'
+     shell: sudo su - root -c 'sudo add-apt-repository ppa:openjdk-r/ppa -y'
      args:
         executable: /bin/bash
 
