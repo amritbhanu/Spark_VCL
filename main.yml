@@ -47,21 +47,9 @@
      sudo: true
      command: pip install --upgrade pip
 
-   - name: install numpy
+   - name: install scipy numpy scikit-learn pandas jupyter
      sudo: true
-     command: pip install numpy
-
-   - name: install scipy
-     sudo: true
-     command: pip install scipy
-
-   - name: install scikit learn
-     sudo: true
-     command: pip install scikit-learn
-
-   - name: install pandas
-     sudo: true
-     command: pip install pandas
+     command: pip install -U scipy numpy scikit-learn pandas jupyter
 
    - name: create spark dir
      sudo: false
