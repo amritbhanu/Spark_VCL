@@ -23,7 +23,33 @@
       - libatlas-base-dev
       - gfortran
       - python-matplotlib
+      - ipython
+      - ipython-notebook
 
+   - name: create pip dir
+     sudo: false
+     file: path=/home/{{user}}/pip state=directory mode=0755
+
+   - name: download pip Upgrade
+     sudo: false
+     get_url: url=https://pypi.python.org/packages/e7/a8/7556133689add8d1a54c0b14aeff0acb03c64707ce100ecd53934da1aa13/pip-8.1.2.tar.gz dest=/home/{{user}}/pip/
+
+   - name: Unarchive pip download
+     sudo: false
+     unarchive: src=/home/{{user}}/pip/pip-8.1.2.tar.gz dest=/home/{{user}}/pip copy=no
+
+   - name: Run python command
+     sudo: True
+     command: python /home/{{user}}/pip/pip-8.1.2/setup.py install
+ 
+   - name: upgrade pip
+     sudo: true
+     command: pip install --upgrade pip
+
+   - name: install jupyter
+     sudo: true
+     command: pip install jupyter
+     
    - name: install numpy
      sudo: true
      command: pip install numpy
