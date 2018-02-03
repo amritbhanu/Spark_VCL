@@ -27,15 +27,19 @@
 
    - name: install numpy
      sudo: true
-     command: pip install -U numpy
+     command: pip install numpy
 
    - name: install scipy
      sudo: true
-     command: pip install -U scipy
+     command: pip install scipy
 
    - name: install scikit learn
      sudo: true
-     command: pip install -U scikit-learn
+     command: pip install scikit-learn
+
+   - name: install pandas
+     sudo: true
+     command: pip install pandas
 
    - name: create spark dir
      sudo: false
