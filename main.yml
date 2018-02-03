@@ -41,9 +41,9 @@
 
    - name: Run python command
      sudo: true
-     command: python /home/{{user1}}/pip/pip-8.1.2/setup.py install
+     command: chdir=/home/{{user1}}/pip/pip-8.1.2/ python setup.py install
  
-   - name: Adding Java 8 key
+   - name: Upgrade python pip
      shell: sudo su - root -c 'sudo pip install --upgrade pip'
      args:
         executable: /bin/bash
